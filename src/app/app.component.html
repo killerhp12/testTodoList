@@ -1,3 +1,104 @@
 <div>
-  <button nz-button nzType="primary">Primary Button</button>
+  <button nz-button nzType="primary" (click)="openAddForm()">New Task</button>
 </div>
+<div>
+  <nz-table #basicTable [nzData]="listTodo">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td><label nz-checkbox></label></td>
+        <td>{{ data.title }}</td>
+        <td>
+          <button nz-button nzType="primary" nzShape="round">Detail</button
+          ><button nz-button nzType="danger" nzShape="round">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isShowModal"
+  [nzTitle]="title"
+  [nzFooter]="null"
+  [nzClosable]="false"
+  [nzMaskClosable]="true"
+>
+  <div class="alain-center" nzSpan="24">
+    <h5>{{ isAdd ? "New Task" : "Edit Task" }}</h5>
+  </div>
+  <form nz-form [formGroup]="todoForm" (ngSubmit)="submitForm($event)">
+    <div>
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Title is required!">
+            <input
+              class="width-100"
+              formControlName="title"
+              name="title"
+              nz-input
+              placeholder="Add new task..."
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="24" class="mt-5">
+        <nz-form-label nzFor="email">Description</nz-form-label>
+        <br />
+        <nz-form-item>
+          <textarea
+            formControlName="description"
+            name="description"
+            nz-input
+            nzAutosize
+          ></textarea>
+        </nz-form-item>
+      </div>
+      <div nz-row [nzGutter]="10" class="mt-5">
+        <div nz-col [nzXs]="{ span: 24 }" [nzLg]="{ span: 12 }">
+          <nz-form-label [nzSpan]="24">Due Date </nz-form-label>
+          <br />
+          <nz-form-item>
+            <nz-date-picker
+              formControlName="dueDate"
+              name="dueDate"
+            ></nz-date-picker>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzXs]="{ span: 24 }" [nzLg]="{ span: 12 }">
+          <nz-form-label [nzSpan]="24">Priority </nz-form-label>
+          <br />
+          <nz-form-item>
+            <nz-select
+              formControlName="priority"
+              name="priority"
+              ngModel="nomal"
+              class="min-width-100"
+            >
+              <nz-option nzValue="low" nzLabel="low"></nz-option>
+              <nz-option nzValue="nomal" nzLabel="nomal"></nz-option>
+              <nz-option nzValue="high" nzLabel="high"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+    <div nz-row class="width-100 mt-5">
+      <button nz-button nzType="primary" nzShape="round">
+        {{ isAdd ? "Add" : "Update" }}
+      </button>
+    </div>
+  </form>
+</nz-modal>
+
+<ng-template #title>
+  <div nz-row class="float-right">
+    <span (click)="closeModal()">X</span>
+  </div>
+</ng-template>
