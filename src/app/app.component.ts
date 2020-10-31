@@ -15,20 +15,23 @@ import { HelperService } from './services/helper.service';
 })
 export class AppComponent {
   listTodo: Array<toDo> = [];
-  constructor(
-    private formBuilder: FormBuilder,
-    private message: NzMessageService,
-    private helper: HelperService
-  ) {
-    this.listTodo = JSON.parse(JSON.stringify(dataList));
-  }
-
   isShowModal: boolean = false;
   isAdd: boolean = false;
   todoForm: FormGroup;
   today: Date = new Date();
   taskInfo: toDo = new toDoModel();
   currentId: number;
+  filterValue: string;
+  cloneData: Array<toDo> = [];
+  constructor(
+    private formBuilder: FormBuilder,
+    private message: NzMessageService,
+    private helper: HelperService
+  ) {
+    this.listTodo = JSON.parse(JSON.stringify(dataList));
+    this.cloneData = JSON.parse(JSON.stringify(dataList));
+  }
+
   ngOnInit(): void {
     this.todoForm = this.formBuilder.group({
       title: new FormControl(null, [Validators.required]),
@@ -69,7 +72,7 @@ export class AppComponent {
         this.listTodo.push(obj);
       } else {
         for (let i = 0; i < this.listTodo.length; i++) {
-          if ((this.listTodo[i].id = this.currentId)) {
+          if (this.listTodo[i].id == this.currentId) {
             this.listTodo[i].title = this.todoForm.value.title;
             this.listTodo[i].description = this.todoForm.value.description;
             this.listTodo[i].dueDate = this.todoForm.value.dueDate;
@@ -79,6 +82,7 @@ export class AppComponent {
       }
       this.closeModal();
       this.sortData();
+      this.updateData();
     }
   }
 
@@ -99,8 +103,6 @@ export class AppComponent {
   openUpdateForm(item) {
     this.isShowModal = true;
     this.isAdd = false;
-    console.log(item);
-    
     this.currentId = item.id;
     this.taskInfo.title = item.title;
     this.taskInfo.description = item.description;
@@ -114,15 +116,45 @@ export class AppComponent {
 
   updateChecked(e, data) {
     if (e.target.checked) {
-      console.log('checked');
+      for (let i = 0; i < this.listTodo.length; i++) {
+        if (this.listTodo[i].id == data.id) {
+          this.listTodo[i].showDone = 1;
+        }
+      }
+      this.updateData();
+      return;
     }
+    for (let i = 0; i < this.listTodo.length; i++) {
+      if (this.listTodo[i].id == data.id) {
+        this.listTodo[i].showDone = 0;
+      }
+    }
+    this.updateData();
+    return;
+  }
+
+  changeToDone(){
+    alert('Done!');
   }
 
   removeItem(index) {
     if (confirm('Are you sure you want to delete?')) {
       this.listTodo.splice(index, 1);
+      this.updateData();
       return;
     }
     return;
+  }
+
+  updateData() {
+    this.cloneData = this.listTodo;
+  }
+
+  doSearch(e) {
+    if (e.keyCode == 13) {
+      return (this.listTodo = this.cloneData.filter((x) =>
+        x.title.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase().trim())
+      ));
+    }
   }
 }

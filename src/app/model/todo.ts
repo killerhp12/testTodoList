@@ -4,6 +4,7 @@ export interface toDo {
     description:string;
     dueDate: Date;
     priority:string;
+    showDone?:number;
 }
 
 export class toDoModel{
@@ -12,6 +13,7 @@ export class toDoModel{
     description:string;
     dueDate: Date;
     priority:string;
+    showDone?:number;
 }
 
 export const dataList:Array<toDo> = [
@@ -21,6 +23,7 @@ export const dataList:Array<toDo> = [
       description: 'Học lập trình angular',
       dueDate: new Date('2020/10/15'),
       priority: 'low',
+      showDone:0,
     },
     {
       id:2,
@@ -28,6 +31,7 @@ export const dataList:Array<toDo> = [
       description: 'Học lập trình NodeJs',
       dueDate: new Date('2020/10/5'),
       priority: 'normal',
+      showDone:0,
     },
     {
       id:3,
@@ -35,6 +39,7 @@ export const dataList:Array<toDo> = [
       description: 'Học lập trình PHP',
       dueDate: new Date('2020/10/10'),
       priority: 'high',
+      showDone:0,
     },
     {
       id:4,
@@ -42,6 +47,7 @@ export const dataList:Array<toDo> = [
       description: 'Học framework Laravel',
       dueDate: new Date('2020/10/8'),
       priority: 'high',
+      showDone:0,
     },
     {
       id:5,
@@ -49,5 +55,6 @@ export const dataList:Array<toDo> = [
       description: 'Học framework Ng-Zorro',
       dueDate: new Date('2020/10/20'),
       priority: 'high',
+      showDone:0,
     },
   ];
