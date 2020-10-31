@@ -2,7 +2,7 @@
   <button nz-button nzType="primary" (click)="openAddForm()">New Task</button>
 </div>
 <div>
-  <nz-table #basicTable [nzData]="listTodo">
+  <table class="table">
     <thead>
       <tr>
         <th></th>
@@ -11,16 +11,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td><label nz-checkbox></label></td>
+      <tr *ngFor="let data of listTodo; let i = index">
+        <td>
+          <label nz-checkbox (change)="updateChecked($event, data)"></label>
+        </td>
         <td>{{ data.title }}</td>
         <td>
-          <button nz-button nzType="primary" nzShape="round">Detail</button
-          ><button nz-button nzType="danger" nzShape="round">Remove</button>
+          <button nz-button nzType="primary" nzShape="round" (click)="openUpdateForm(data)" class="mr-5">
+            Detail</button
+          ><button nz-button nzType="danger" nzShape="round" (click)="removeItem(i)">Remove</button>
         </td>
       </tr>
     </tbody>
-  </nz-table>
+  </table>
 </div>
 
 <nz-modal
@@ -44,6 +47,7 @@
               name="title"
               nz-input
               placeholder="Add new task..."
+              [(ngModel)]="taskInfo.title"
             />
           </nz-form-control>
         </nz-form-item>
@@ -57,6 +61,7 @@
             name="description"
             nz-input
             nzAutosize
+            [(ngModel)]="taskInfo.description"
           ></textarea>
         </nz-form-item>
       </div>
@@ -65,10 +70,14 @@
           <nz-form-label [nzSpan]="24">Due Date </nz-form-label>
           <br />
           <nz-form-item>
-            <nz-date-picker
-              formControlName="dueDate"
-              name="dueDate"
-            ></nz-date-picker>
+            <nz-form-control nzErrorTip="Due date is required!">
+              <nz-date-picker
+                formControlName="dueDate"
+                name="dueDate"
+                [nzDefaultPickerValue]="today"
+                [(ngModel)]="taskInfo.dueDate"
+              ></nz-date-picker>
+            </nz-form-control>
           </nz-form-item>
         </div>
         <div nz-col [nzXs]="{ span: 24 }" [nzLg]="{ span: 12 }">
@@ -79,6 +88,7 @@
               formControlName="priority"
               name="priority"
               ngModel="nomal"
+              [(ngModel)]="taskInfo.priority"
               class="min-width-100"
             >
               <nz-option nzValue="low" nzLabel="low"></nz-option>
