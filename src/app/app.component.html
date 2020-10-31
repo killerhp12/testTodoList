@@ -28,7 +28,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of listTodo; let i = index">
+      <tr
+        *ngFor="let data of listTodo; let i = index"
+        [ngClass]="{
+          'default-color': data.showDone === 0,
+          'selected-color': data.showDone === 1
+        }"
+      >
         <td>
           <label nz-checkbox (change)="updateChecked($event, data)"></label>
         </td>
