@@ -68,6 +68,7 @@ export class AppComponent {
           description: this.todoForm.value.description,
           dueDate: this.todoForm.value.dueDate,
           priority: this.todoForm.value.priority,
+          showDone: 0
         };
         this.listTodo.push(obj);
       } else {
