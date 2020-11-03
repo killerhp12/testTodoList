@@ -68,7 +68,7 @@ export class AppComponent {
           description: this.todoForm.value.description,
           dueDate: this.todoForm.value.dueDate,
           priority: this.todoForm.value.priority,
-          showDone: 0
+          showDone: 0,
         };
         this.listTodo.push(obj);
       } else {
@@ -134,7 +134,41 @@ export class AppComponent {
     return;
   }
 
-  changeToDone(){
+  updateAllData(type: number) {
+    if (type == 1) {
+      for (let i = 0; i < this.listTodo.length; i++) {
+        this.listTodo[i].showDone = 1;
+      }
+      this.updateData();
+      return;
+    }
+
+    for (let i = 0; i < this.listTodo.length; i++) {
+      this.listTodo[i].showDone = 0;
+    }
+    this.updateData();
+    return;
+  }
+
+  checkedAll(e) {
+    if (e.target.checked) {
+      let listCheckbox = document.getElementsByClassName('checkbox');
+      for (let i = 0; i < listCheckbox.length; i++) {
+        listCheckbox[i]['checked'] = true;
+      }
+      this.updateAllData(1);
+      return;
+    }
+
+    let listCheckbox = document.getElementsByClassName('checkbox');
+    for (let i = 0; i < listCheckbox.length; i++) {
+      listCheckbox[i]['checked'] = false;
+    }
+    this.updateAllData(0);
+    return;
+  }
+
+  changeToDone() {
     alert('Done!');
   }
 
@@ -154,7 +188,9 @@ export class AppComponent {
   doSearch(e) {
     if (e.keyCode == 13) {
       return (this.listTodo = this.cloneData.filter((x) =>
-        x.title.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase().trim())
+        x.title
+          .toLocaleLowerCase()
+          .includes(this.filterValue.toLocaleLowerCase().trim())
       ));
     }
   }

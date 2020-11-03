@@ -22,7 +22,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th></th>
+        <th><input type="checkbox" (change)="checkedAll($event)"></th>
         <th>Title</th>
         <th>Action</th>
       </tr>
@@ -36,7 +36,7 @@
         }"
       >
         <td>
-          <label nz-checkbox (change)="updateChecked($event, data)"></label>
+          <input type="checkbox" (change)="updateChecked($event, data)" class="checkbox">
         </td>
         <td>{{ data.title }}</td>
         <td>
